@@ -34,6 +34,5 @@ public class PlayerController : MonoBehaviour
         _cam.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
         
         _rb.rotation = Quaternion.Euler(0f, _yRotation, 0f);
-        print((int)(1/Time.deltaTime));
     }
 }

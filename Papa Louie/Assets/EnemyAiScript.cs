@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -23,6 +24,8 @@ public class EnemyAiScript : MonoBehaviour
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
+    public float fov;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -30,14 +33,36 @@ public class EnemyAiScript : MonoBehaviour
 
     private void Update()
     {
-        var pos = transform.position;
-        // playerInSightRange = Physics.CheckSphere(pos, sightRange, whatIsPlayer);
-        // playerInAttackRange = Physics.CheckSphere(pos, attackRange, whatIsPlayer);
+        var t = transform;
+        var pos = t.position;
+
+        var fwd = t.forward * 10;
+
+        playerInSightRange = Physics.CheckSphere(pos, 10, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(pos, 1, whatIsPlayer);
+
+        var targetDir = player.position - t.position;
+        var angle = Vector3.Angle(targetDir, t.forward);
+        var rayToPlayer = false;
+        if (angle < fov && playerInSightRange)
+        {
+            Debug.DrawLine(pos, player.position, Color.red);
+            rayToPlayer = Physics.Raycast(pos, targetDir, whatIsPlayer);
+        }
         
+        Debug.DrawRay(pos, t.forward * 10, Color.gray);
         
-        if (!playerInSightRange && !playerInAttackRange) Patrol();
-        if (playerInSightRange && !playerInAttackRange) Chase();
-        if (playerInAttackRange && playerInSightRange) Attack();
+        switch (rayToPlayer)
+        {
+            case false when !playerInAttackRange:
+                // Patrol();
+                break;
+            case true when !playerInAttackRange:
+                // Chase();
+                break;
+        }
+
+        if (rayToPlayer && playerInAttackRange) Attack();
     }
 
     private void Patrol()

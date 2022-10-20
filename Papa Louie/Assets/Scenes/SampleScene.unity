@@ -850,6 +850,7 @@ MonoBehaviour:
   attackRange: 1
   playerInSightRange: 0
   playerInAttackRange: 0
+  fov: 60
 --- !u!114 &1556741939
 MonoBehaviour:
   m_ObjectHideFlags: 0

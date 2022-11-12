@@ -14,8 +14,8 @@ TagManager:
   - Walkable
   - Weapon
   - Ground
-  - 
-  - 
+  - Solid
+  - Enemy
   - 
   - 
   - 

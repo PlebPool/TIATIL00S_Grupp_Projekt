@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
         var playerHorizontalRelative = Input.GetAxis("Horizontal") * transform.right.normalized;
         var cameraMovementRelative = playerVerticalRelative + playerHorizontalRelative;
         cameraMovementRelative.y = 0f;
-        _rb.velocity = cameraMovementRelative * speedModifier;
+        _rb.velocity = cameraMovementRelative.normalized * speedModifier;
         
         _xRotation -= Input.GetAxis("Mouse Y") * sensitivity;
         _yRotation += Input.GetAxis("Mouse X") * sensitivity;
